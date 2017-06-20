@@ -1,0 +1,32 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "format": "ova",
+      "headless": true,
+      "source_path": "centos-7-base.ova",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_timeout": "30m",
+      "ssh_pty": true,
+      "shutdown_command": "sudo shutdown -h now",
+      "vrdp_bind_address": "0.0.0.0"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo {{ .Path }}",
+      "scripts": [
+        "scripts/centos-7-nginx.sh",
+        "scripts/centos-7-cleanup.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true
+    }
+  ]
+}

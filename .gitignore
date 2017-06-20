@@ -1,0 +1,6 @@
+*.box
+*.ova
+packer_cache
+output-virtualbox-*
+*~
+*.swp

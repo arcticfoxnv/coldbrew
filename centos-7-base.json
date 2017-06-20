@@ -1,0 +1,42 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "disk_size": 8192,
+      "format": "ova",
+      "guest_os_type": "RedHat_64",
+      "headless": true,
+      "http_directory": "ks",
+      "iso_url": "http://packer.s3.steamworks.local/isos/CentOS-7-x86_64-NetInstall-1611.iso",
+      "iso_checksum": "f2f7367deb90a25822947660c71638333ca0eceeabecc2d631be6cd508c24494",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_timeout": "30m",
+      "ssh_pty": true,
+      "shutdown_command": "sudo shutdown -h now",
+      "vrdp_bind_address": "0.0.0.0",
+      "boot_command": [
+        "<esc><esc>",
+        "linux ip=dhcp ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos-7-base.cfg",
+        "<enter>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo {{ .Path }}",
+      "scripts": [
+        "scripts/centos-7-base.sh",
+        "scripts/centos-7-cleanup.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true
+    }
+  ]
+}
