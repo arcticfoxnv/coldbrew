@@ -111,7 +111,10 @@ if __name__ == "__main__":
   )
 
   if args.update:
-    manifest.load(args.filename)
+    try:
+      manifest.load(args.filename)
+    except IOError:
+      pass
 
   checksum = get_box_file_checksum(args.box_filename)
   manifest.add_version(

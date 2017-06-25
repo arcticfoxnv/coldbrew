@@ -11,22 +11,33 @@ clean:
 
 push:
 	s3cmd --config=${S3CONFIG} --acl-public put *.ova s3://packer/ovas/
-	s3cmd --config=${S3CONFIG} --acl-public put *.box s3://boxes
+	s3cmd --config=${S3CONFIG} --acl-public put build/*.box s3://boxes
+	s3cmd --config=${S3CONFIG} --acl-public put build/*.json s3://boxes
 
 centos-7-base: centos-7-base.box
 
 centos-7-base.box: centos-7-base.json
+	$(eval BOXNAME := centos-7-base)
+	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
+	$(eval BOXFILENAME := build/$(BOXNAME)-$(BOXVERSION).box)
+	mkdir -p build
 	rm -rf output-virtualbox-iso
-	packer build centos-7-base.json
-	mv -f packer_virtualbox-iso_virtualbox.box centos-7-base.box
-	mv -f output-virtualbox-iso/*.ova centos-7-base.ova
+	packer build $(BOXNAME).json
+	mv -f packer_virtualbox-iso_virtualbox.box $(BOXFILENAME)
+	mv -f output-virtualbox-iso/*.ova $(BOXNAME).ova
+	./manifest.py --update build/$(BOXNAME).json $(BOXFILENAME) $(BOXNAME) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXFILENAME) --description "CentOS 7 Base"
 
 centos-7-nginx: centos-7-nginx.box
 
 centos-7-nginx.box: centos-7-base centos-7-nginx.json
+	$(eval BOXNAME := centos-7-nginx)
+	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
+	$(eval BOXFILENAME := build/$(BOXNAME)-$(BOXVERSION).box)
+	mkdir -p build
 	rm -rf output-virtualbox-ovf
-	packer build centos-7-nginx.json
-	mv -f packer_virtualbox-ovf_virtualbox.box centos-7-nginx.box
-	mv -f output-virtualbox-ovf/*.ova centos-7-nginx.ova
+	packer build $(BOXNAME).json
+	mv -f packer_virtualbox-ovf_virtualbox.box $(BOXFILENAME)
+	mv -f output-virtualbox-ovf/*.ova $(BOXNAME).ova
+	./manifest.py --update build/$(BOXNAME).json $(BOXFILENAME) $(BOXNAME) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXFILENAME) --description "CentOS 7 +Nginx"
 
 centos7: centos-7-base centos-7-nginx
