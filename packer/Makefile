@@ -17,27 +17,29 @@ push:
 centos-7-base: centos-7-base.box
 
 centos-7-base.box: centos-7-base.json
-	$(eval BOXNAME := centos-7-base)
+	$(eval BOXBASE := centos-7-base)
 	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
-	$(eval BOXFILENAME := build/$(BOXNAME)-$(BOXVERSION).box)
+	$(eval BOXNAME := $(BOXBASE)-$(BOXVERSION))
+	$(eval BOXFILENAME := build/$(BOXNAME).box)
 	mkdir -p build
-	rm -rf output-virtualbox-iso
-	packer build $(BOXNAME).json
+	rm -rf output-virtualbox-ovf
+	packer build $(BOXBASE).json
 	mv -f packer_virtualbox-iso_virtualbox.box $(BOXFILENAME)
-	mv -f output-virtualbox-iso/*.ova $(BOXNAME).ova
-	./manifest.py --update build/$(BOXNAME).json $(BOXFILENAME) $(BOXNAME) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXFILENAME) --description "CentOS 7 Base"
+	mv -f output-virtualbox-iso/*.ova $(BOXBASE).ova
+	./manifest.py --update build/$(BOXBASE).json $(BOXFILENAME) https://vagrant.subversivedata.com/$(BOXBASE) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXNAME).box --description "CentOS 7 Base"
 
 centos-7-nginx: centos-7-nginx.box
 
 centos-7-nginx.box: centos-7-base centos-7-nginx.json
-	$(eval BOXNAME := centos-7-nginx)
+	$(eval BOXBASE := centos-7-nginx)
 	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
-	$(eval BOXFILENAME := build/$(BOXNAME)-$(BOXVERSION).box)
+	$(eval BOXNAME := $(BOXBASE)-$(BOXVERSION))
+	$(eval BOXFILENAME := build/$(BOXNAME).box)
 	mkdir -p build
 	rm -rf output-virtualbox-ovf
-	packer build $(BOXNAME).json
+	packer build $(BOXBASE).json
 	mv -f packer_virtualbox-ovf_virtualbox.box $(BOXFILENAME)
-	mv -f output-virtualbox-ovf/*.ova $(BOXNAME).ova
-	./manifest.py --update build/$(BOXNAME).json $(BOXFILENAME) $(BOXNAME) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXFILENAME) --description "CentOS 7 +Nginx"
+	mv -f output-virtualbox-ovf/*.ova $(BOXBASE).ova
+	./manifest.py --update build/$(BOXBASE).json $(BOXFILENAME) https://vagrant.subversivedata.com/$(BOXBASE) $(BOXVERSION) virtualbox https://vagrant.subversivedata.com/$(BOXNAME).box --description "CentOS 7 +Nginx"
 
 centos7: centos-7-base centos-7-nginx
