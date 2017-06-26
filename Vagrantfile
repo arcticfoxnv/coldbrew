@@ -13,11 +13,11 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.define "base", autostart: false do |web|
-      web.vm.box = "http://boxes.s3.steamworks.local/centos-7-base.box"
+      web.vm.box = "https://vagrant.subversivedata.com/centos-7-base"
   end
 
   config.vm.define "nginx", autostart: false do |web|
-      web.vm.box = "http://boxes.s3.steamworks.local/centos-7-nginx.box"
+      web.vm.box = "https://vagrant.subversivedata.com/centos-7-nginx"
   end
 
   # Disable automatic box update checking. If you disable this, then

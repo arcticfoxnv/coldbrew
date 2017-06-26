@@ -32,6 +32,11 @@
         "scripts/centos-7-base.sh",
         "scripts/centos-7-cleanup.sh"
       ]
+    },
+    {
+      "type": "file",
+      "source": "boxversion",
+      "destination": "/home/vagrant/boxversion"
     }
   ],
   "post-processors": [
