@@ -11,9 +11,8 @@ clean:
 	rm -rf build *.ova *.box
 
 push:
-	s3cmd --config=${S3CONFIG} --acl-public put *.ova s3://packer/ovas/
-	s3cmd --config=${S3CONFIG} --acl-public put build/*.box s3://boxes
-	s3cmd --config=${S3CONFIG} --acl-public put build/*.json s3://boxes
+	s3cmd --config=${S3CONFIG} --acl-public sync --exclude=\* --include=\*.ova . s3://packer/ovas/
+	s3cmd --config=${S3CONFIG} --acl-public sync build/ s3://boxes
 
 centos-7-base: centos-7-base.ova
 
