@@ -15,17 +15,17 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "boxversion",
+      "destination": "/tmp/boxversion"
+    },
+    {
       "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo {{ .Path }}",
       "scripts": [
         "scripts/centos-7-nginx.sh",
         "scripts/centos-7-cleanup.sh"
       ]
-    },
-    {
-      "type": "file",
-      "source": "boxversion",
-      "destination": "/home/vagrant/boxversion"
     }
   ],
   "post-processors": [

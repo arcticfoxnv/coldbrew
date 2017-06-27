@@ -19,6 +19,10 @@ cd nginx-1.13.1
 cd /tmp
 rm -rf ModSecurity nginx-1.13.1
 
+git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /opt/owasp-crs
 openssl dhparam 2048 -out /etc/pki/tls/dhparam.pem
+
+VER=$(cat /tmp/boxversion)
+echo "nginx+modsecurity: ${VER}" >> /home/vagrant/boxversion
 
 exit 0

@@ -16,6 +16,7 @@ rm -f /var/log/vboxadd-install*.log
 rm -f /var/log/VBoxGuestAdditions.log
 
 rm -f /home/vagrant/VBoxGuestAdditions.iso
+rm -f /tmp/boxversion
 swapoff -a
 export $(blkid -o export /dev/sda2 | grep UUID)
 export OLDUUID=${UUID}
