@@ -20,6 +20,10 @@ Vagrant.configure("2") do |config|
       web.vm.box = "https://vagrant.subversivedata.com/centos-7-nginx"
   end
 
+  config.vm.define "nginx+modsec", autostart: false do |web|
+      web.vm.box = "https://vagrant.subversivedata.com/centos-7-nginx+modsecurity"
+  end
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
