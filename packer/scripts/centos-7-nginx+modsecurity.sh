@@ -28,12 +28,13 @@ cp /tmp/config/unicode.mapping /opt/nginx/conf
 cp /tmp/config/crs-setup.conf /opt/owasp-crs
 cp /tmp/config/nginx.service /lib/systemd/system/nginx.service
 rename .example '' /opt/owasp-crs/rules/*.example
+
 systemctl --system daemon-reload
 systemctl enable nginx
 
-rm -rf /tmp/*
-
 VER=$(cat /tmp/boxversion)
 echo "nginx+modsecurity: ${VER}" >> /home/vagrant/boxversion
+
+rm -rf /tmp/*
 
 exit 0
