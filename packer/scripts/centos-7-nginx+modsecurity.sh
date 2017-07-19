@@ -22,6 +22,16 @@ rm -rf ModSecurity nginx-1.13.1
 git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /opt/owasp-crs
 openssl dhparam 2048 -out /etc/pki/tls/dhparam.pem
 
+cp /tmp/config/nginx.conf /opt/nginx/conf
+cp /tmp/config/modsecurity.conf /opt/nginx/conf
+cp /tmp/config/unicode.mapping /opt/nginx/conf
+cp /tmp/config/crs-setup.conf /opt/owasp-crs
+cp /tmp/config/nginx.service /lib/systemd/system/nginx.service
+rename .example '' /opt/owasp-crs/rules/*.example
+systemctl --system daemon-reload
+
+rm -rf /tmp/*
+
 VER=$(cat /tmp/boxversion)
 echo "nginx+modsecurity: ${VER}" >> /home/vagrant/boxversion
 

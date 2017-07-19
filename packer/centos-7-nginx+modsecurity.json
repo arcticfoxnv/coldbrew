@@ -21,6 +21,15 @@
     },
     {
       "type": "shell",
+      "inline": "mkdir /tmp/config"
+    },
+    {
+      "type": "file",
+      "source": "configs/centos-7-nginx+modsecurity/",
+      "destination": "/tmp/config"
+    },
+    {
+      "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo {{ .Path }}",
       "scripts": [
         "scripts/centos-7-nginx+modsecurity.sh",
