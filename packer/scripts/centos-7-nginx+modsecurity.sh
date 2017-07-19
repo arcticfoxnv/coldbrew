@@ -29,6 +29,7 @@ cp /tmp/config/crs-setup.conf /opt/owasp-crs
 cp /tmp/config/nginx.service /lib/systemd/system/nginx.service
 rename .example '' /opt/owasp-crs/rules/*.example
 systemctl --system daemon-reload
+systemctl enable nginx
 
 rm -rf /tmp/*
 
