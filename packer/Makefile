@@ -1,4 +1,4 @@
-.PHONY: all clean install push push-s3
+.PHONY: all clean install push push-s3 centos7 centos-7-base centos-7-nginx centos-7-nginx+modsec
 all:
 	@echo "Targets:"
 	@echo "  clean - delete images"
@@ -30,9 +30,9 @@ centos-7-base.ova: centos-7-base.json
 	./manifest.py --update build/$(BOXBASE).json $(BOXFILENAME) https://vagrant.subversivedata.com/$(BOXBASE) $(shell cat VERSION) virtualbox https://vagrant.subversivedata.com/$(BOXNAME).box --description "CentOS 7 Base"
 	rm -f boxversion
 
-centos-7-nginx: centos-7-nginx.ova
+centos-7-nginx: | centos-7-base centos-7-nginx.ova
 
-centos-7-nginx.ova: centos-7-base centos-7-nginx.json
+centos-7-nginx.ova: centos-7-nginx.json
 	$(eval BOXBASE := centos-7-nginx)
 	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
 	$(eval BOXNAME := $(BOXBASE)-$(BOXVERSION))
@@ -46,9 +46,9 @@ centos-7-nginx.ova: centos-7-base centos-7-nginx.json
 	./manifest.py --update build/$(BOXBASE).json $(BOXFILENAME) https://vagrant.subversivedata.com/$(BOXBASE) $(shell cat VERSION) virtualbox https://vagrant.subversivedata.com/$(BOXNAME).box --description "CentOS 7 +Nginx"
 	rm -f boxversion
 
-centos-7-nginx+modsec: centos-7-nginx+modsecurity.ova
+centos-7-nginx+modsec: | centos-7-base centos-7-nginx+modsecurity.ova
 
-centos-7-nginx+modsecurity.ova: centos-7-base centos-7-nginx+modsecurity.json
+centos-7-nginx+modsecurity.ova: centos-7-nginx+modsecurity.json
 	$(eval BOXBASE := centos-7-nginx+modsecurity)
 	$(eval BOXVERSION := $(shell date +%Y%m%d-$(shell git rev-parse --short HEAD)))
 	$(eval BOXNAME := $(BOXBASE)-$(BOXVERSION))
@@ -62,4 +62,4 @@ centos-7-nginx+modsecurity.ova: centos-7-base centos-7-nginx+modsecurity.json
 	./manifest.py --update build/$(BOXBASE).json $(BOXFILENAME) https://vagrant.subversivedata.com/$(BOXBASE) $(shell cat VERSION) virtualbox https://vagrant.subversivedata.com/$(BOXNAME).box --description "CentOS 7 +Nginx +ModSecurity"
 	rm -f boxversion
 
-centos7: centos-7-base centos-7-nginx centos-7-nginx+modsec
+centos7: | centos-7-base centos-7-nginx centos-7-nginx+modsec
